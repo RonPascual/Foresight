@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "foresight_types.h"
 #include "radar.h"
+
 // Radar Frame Parser
 // Things to know about the frame format:
 // - Each frame starts with 0xAA 0xAA and ends with 0x55 0x55
@@ -53,13 +54,13 @@ void loop() {
   readRadarBytes();
 }
 
-
-void readRadarBytes() {
+// read the radar's bytes and assemble into frames
+bool readRadarBytes(RadarFrame& out) {
   while (Serial1.available()) {
     uint8_t b = Serial1.read();   // read ONE byte
 
     if (pos == 0) {
-      // Still looking for the first start byte
+      // look for the first start byte
       // if b == 0xAA: add it to the buffer
       // else: discard it
       
@@ -67,19 +68,20 @@ void readRadarBytes() {
     else if (pos == 1) {
       // Need the second start byte right after the first
       // if b == 0xAA: add it to the buffer
-      // else: not a real frame start, reset pos to 0 and discard
+      // else: not a real frame start, resetFrame() and discard
     }
     else {
       // A frame is in progress: add every byte to the buffer
       // if we just received the 3rd byte (pos == 3 after adding):
       //   numTargets = that byte
       //   expected length = 5 + 10 * numTargets
-      // if we have collected the expected length:
-      //   check the last two bytes are 0x55 0x55
-      //   if valid: parse the frame
-      //   reset pos to 0 to look for the next frame
+      // Once we have collected expectedLength bytes, the frame is complete:
+      //   bool ok = parseFrame(); checks frame and fills 'out', the frame struct (includes array of Target structs + count of number of targets)   
+      //   resetFrame() to start looking for the next frame
+      //   if (ok) return true, tell main.cpp that a new frame is ready
     }
   }
+  return false; // no new frame ready yet
 }
 
 
@@ -87,13 +89,11 @@ void resetFrame() {
   // set pos = 0, numTargets = 0, expectedLength = 0
 }
 
-
 bool isFrameValid(const uint8_t* buf, size_t len) {
   // Check the frame is valid (start bytes, end bytes, length)
   // Return true if valid, false if not
   return false; // placeholder
 }
-
 
 // Need to combine bytes since distance, speed, and angle are sent as 2 byte values 
 uint16_t combineBytes(const uint8_t* p) {
@@ -102,7 +102,23 @@ uint16_t combineBytes(const uint8_t* p) {
 }
 
 
+// Takes a finished frame, checks it, and fills the RadarFrame struct 'out' with the decoded targets
+// Returns true if frame is valid and 'out' is filled, false if not
+bool parseFrame(const uint8_t* buf, size_t len, RadarFrame& out) {
+  // Check if frame is valid using isFrameValid(); if not discard and return
+  // Read target count from the 3rd byte of the frame: buf[2]
+  // Set out.count = target count
+  // Make an array of Target structs to hold the decoded targets
+  // For each target in the frame
+  // Decode each target and print its information
+  // Use decodeTarget() to convert the 10-byte record into a Target struct
+  // Use printTarget() to print the target's information
+  return false; // placeholder
+}
+
+// Turns ONE 10-byte target record into ONE readable Target struct
 Target decodeTarget(const uint8_t* r) {
+  // Fill in each field using the OFFSET constants
   // Decode the 10-byte record into a Target struct
   // use combineBytes() to read the 2-byte values for distance, speed, and angle
   // divide distance and speed by 100 to convert to meters and km/h
@@ -110,7 +126,6 @@ Target decodeTarget(const uint8_t* r) {
   Target t = {};
   return t; // placeholder
 }
-
 
 void printTarget(const Target& t) {
   // Print the target's information in a readable format to verify during testing
