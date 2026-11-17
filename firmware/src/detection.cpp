@@ -1,54 +1,43 @@
+//#include detection.h
 
-#include "detection.h"
+/*
+Function evaluateRisk(radarReading): 
 
-// Experimental thresholds (meters)
-// Must be calibrated through testing.
-const float LOW_THRESHOLD = 10.0;
-const float MEDIUM_THRESHOLD = 5.0;
-const float HIGH_THRESHOLD = 2.0;
+    IF radarReading.detected == FALSE:
+        Return NO_WARNING
 
-// Ignore old radar readings
-const unsigned long MAX_DATA_AGE_MS = 500;
+    IF radar.recordedTime > Max_time_allowed:
+        Return NO_WARNING
 
-// Evaluate one radar sensor
-WarningLevel evaluateRisk(RadarReading radar) {
+    IF radarReading.distance < Critical_distance:
+        Return HIGH_WARNING
 
-    // No object detected
-    if (!radar.detected) {
-        return NO_WARNING;
-    }
+    ELSE IF radarReading.distance < Medium_distance
+        Return MEDIUM_WARNING
 
-    // Ignore invalid or stale readings
-    if (radar.distanceM < 0 ||
-        radar.ageMs > MAX_DATA_AGE_MS) {
-        return NO_WARNING;
-    }
+    ELSE IF radarReading.distance < Low_distance:
+        Return LOW_WARNING
+        
+    ELSE:
+        Return NO_WARNING
 
-    // Evaluate distance
-    if (radar.distanceM <= HIGH_THRESHOLD) {
-        return HIGH_WARNING;
-    }
 
-    if (radar.distanceM <= MEDIUM_THRESHOLD) {
-        return MEDIUM_WARNING;
-    }
+FUNCTION evaluateDetection(leftRadar, rightRadar):
 
-    if (radar.distanceM <= LOW_THRESHOLD) {
-        return LOW_WARNING;
-    }
+    CREATE DetectionResult result
+    result.leftWarning = evaluateRisk(leftRadar)
+    result.rightWarning = evaluateRisk(rightRadar)
 
-    return NO_WARNING;
-}
+    Return result
 
-// Evaluate left and right radar sensors
-DetectionResult evaluateDetection(
-    RadarReading leftRadar,
-    RadarReading rightRadar
-) {
-    DetectionResult result;
+FUNCTION calculateTTC(distance, closingSpeed):
 
-    result.leftWarning = evaluateRisk(leftRadar);
-    result.rightWarning = evaluateRisk(rightRadar);
+    IF closingSpeed <= 0:
 
-    return result;
-}
+        RETURN INFINITY
+
+    TTC = distance / closingSpeed
+
+    RETURN TTC
+
+*/
