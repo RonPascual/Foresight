@@ -1,10 +1,15 @@
 #ifndef FORESIGHT_TYPES_H
 #define FORESIGHT_TYPES_H
 
-struct RadarReading {
-    bool detected;
-    float distanceM;
-    unsigned long ageMs;
+struct Target {
+  uint8_t id;
+  uint8_t direction;   // 1 = left, 2 = right
+  float   distance_m;
+  float   speed_kmh;
+  bool    highSpeed;
+  bool    associated;
+  uint8_t frames;
+  int16_t angle_deg;
 };
 
 enum WarningLevel {
