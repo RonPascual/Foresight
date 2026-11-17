@@ -1,13 +1,22 @@
-
-#ifndef DETECTION_H
+/* #ifndef DETECTION_H
 #define DETECTION_H
 
-#include "foresight_types.h"
+FUNCTION evaluateDetection(leftRadar, rightRadar)
 
-// Analyze both radar sensors
-DetectionResult evaluateDetection(
-    RadarReading leftRadar,
-    RadarReading rightRadar
-);
+    INPUT:
+        leftRadar  = RadarReading from left sensor
+        rightRadar = RadarReading from right sensor
 
-#endif
+    PROCESS:
+        Analyze left radar measurement
+        Analyze right radar measurement
+
+        Determine warning level for each side
+
+    OUTPUT:
+        Return DetectionResult containing:
+            leftWarning
+            rightWarning
+
+END FUNCTION
+*/
