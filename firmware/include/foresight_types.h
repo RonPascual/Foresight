@@ -10,6 +10,7 @@ struct Target {
   bool    associated;
   uint8_t frames;
   int16_t angle_deg;
+  int ignored;
 };
 
 enum WarningLevel {
