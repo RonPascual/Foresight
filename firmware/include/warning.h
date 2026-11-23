@@ -22,6 +22,6 @@ enum COLOR
     YELLOW,
     OFF
 };
-
-void handleDetection(DetectionResult result);
+//Commands the correct responce to the warning
+void handleDetection(DetectionResult result); 
 #endif
