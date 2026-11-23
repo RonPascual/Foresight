@@ -1,4 +1,78 @@
-/*
+#include <Arduino.h>
+#include "warning.h"
+
+void Light_Up(LEDID id, COLOR color)
+{
+    if (id == LEFT)
+    {
+        switch (color)
+        {
+            case RED:
+            {
+                analogWrite(LRED, 0);
+                analogWrite(LGREEN, 255);
+                analogWrite(LBLUE, 255);
+                break;
+            }
+            case ORANGE:
+            {
+                analogWrite(LRED, 0 );
+                analogWrite(LGREEN, 123 );
+                analogWrite(LBLUE, 224);
+                break;
+            }
+            case YELLOW:
+            {
+                analogWrite(LRED, 7);
+                analogWrite(LGREEN, 0);
+                analogWrite(LBLUE,224 );
+                break;
+            }
+            default:
+            {
+                analogWrite(LRED, 255);
+                analogWrite(LGREEN, 255);
+                analogWrite(LBLUE, 255);
+                break;
+            }
+        }
+    }
+    else
+    {
+        switch (color)
+        {
+            case RED:
+            {
+                analogWrite(RRED, 0);
+                analogWrite(RGREEN, 255);
+                analogWrite(RBLUE, 255);
+                break;
+            }
+            case ORANGE:
+            {
+                analogWrite(RRED, 0 );
+                analogWrite(RGREEN, 123 );
+                analogWrite(RBLUE, 224);
+                break;
+            }
+            case YELLOW:
+            {
+                analogWrite(RRED, 7);
+                analogWrite(RGREEN, 0);
+                analogWrite(RBLUE,224 );
+                break;
+            }
+            default:
+            {
+                analogWrite(LRED, 255);
+                analogWrite(LGREEN, 255);
+                analogWrite(LBLUE, 255);
+                break;
+            }
+        }
+    }
+}
+
 void handleDetection(DetectionResult result) {
     //Accessing left and right warnings
     WarningLevel left = result.leftWarning;
@@ -6,43 +80,43 @@ void handleDetection(DetectionResult result) {
 
     if (left == HIGH_WARNING)
     {
-    //make left rgb red 
-    //sound left buzzer
+    Light_Up(LEFT, RED);
+    digitalWrite(LBUZZ, HIGH);
     }
-    elif(left == MEDIUM_WARNING)
+    else if(left == MEDIUM_WARNING)
     {
-    //make left rgb ORANGE
-    turn off buzzer
+    Light_Up(LEFT, ORANGE);
+    digitalWrite(LBUZZ, LOW);
     }
-    elif(left == LOW_WARNING)
+    else if(left == LOW_WARNING)
     {
-    //make left rgb yellow
-    turn off buzzer
+    Light_Up(LEFT, YELLOW);
+    digitalWrite(LBUZZ, LOW);
     }
     else
     {
-    turn off left rgg
+    Light_Up(LEFT, OFF);
+    digitalWrite(LBUZZ, LOW);
     }
     if (right == HIGH_WARNING)
     {
-        // make right rgb red
-        // sound right buzzer
+        Light_Up(RIGHT, RED);
+        digitalWrite(RBUZZ, HIGH);
     }
     else if (right == MEDIUM_WARNING)
     {
-        // make right rgb orange
-        // turn off right buzzer
+        Light_Up(RIGHT, ORANGE);
+        digitalWrite(RBUZZ, LOW);
     }
     else if (right == LOW_WARNING)
     {
-        // make right rgb yellow
-        // turn off right buzzer
+        Light_Up(RIGHT, YELLOW);
+        digitalWrite(RBUZZ, LOW);
     }
     else
     {
-        // turn off right rgb
-        // turn off right buzzer
+        Light_Up(RIGHT, OFF);
+        digitalWrite(RBUZZ, LOW);
     }
 
 }
-*/
