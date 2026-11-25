@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include "warning.h"
 
-void Light_Up(LEDID id, COLOR color)
+static void Light_Up(LEDID id, COLOR color)
 {
     if (id == LEFT)
     {
@@ -64,9 +64,9 @@ void Light_Up(LEDID id, COLOR color)
             }
             default:
             {
-                analogWrite(LRED, 255);
-                analogWrite(LGREEN, 255);
-                analogWrite(LBLUE, 255);
+                analogWrite(RRED, 255);
+                analogWrite(RGREEN, 255);
+                analogWrite(RBLUE, 255);
                 break;
             }
         }
